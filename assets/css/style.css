@@ -412,24 +412,30 @@ header .btn-start:focus {
   .sectionCommunity {
     background: url('../img/community_bg.jpg') no-repeat fixed left bottom / cover;
   }
-  .community {
-    display: flex;
-    justify-content: center;
-  }
   .community i {
     font-size: 52px;
   }
-  .contact {
-    width: 100%;
+
+  .cards {
+    display: flex;
+    justify-content: center;
+  }
+  .card {
+    display: inline-block;
+    width: 255px;
     color: #000;
     background: #FFF;
     text-align: center;
-    display: inline-block;
-    border-radius: 12px;
+    margin-right: 80px;
     padding-bottom: 64px;
+    border-radius: 12px!important;
+    border: none!important;
     overflow: hidden;
   }
-  .contact .head {
+  .card:nth-child(3) {
+    margin-right: 0;
+  }
+  .card-head {
     position: relative;
     background: #E5E5E5;
     width: 100%;
@@ -439,14 +445,14 @@ header .btn-start:focus {
     align-items: center;
     margin-bottom: 45px;
   }
-  .contact .head .bend {
+  .card-head .bend {
     width: 100%;
     height: auto;
     position: absolute;
     bottom: -1px;
     left: 0;
   }
-  .contact a {
+  .card a {
     color: #000;
     font-size: 24px;
     font-weight: bold;
@@ -455,7 +461,7 @@ header .btn-start:focus {
     width: 100%;
     display: block;
   }
-  .contact a:hover {
+  .card a:hover {
     color: #555;
   }
 /* Community section */
@@ -563,6 +569,15 @@ header .btn-start:focus {
     .sectionShop input, .sectionShop select {
       font-size: 16px;
       padding: 14px 0 14px 1em;
+    }
+
+    /* Community section */
+    .cards {
+      align-items: center;
+      flex-direction: column;
+    }
+    .card {
+      margin: 35px 0 0;
     }
 
   /* Footer */
