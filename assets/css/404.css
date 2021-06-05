@@ -3,8 +3,12 @@
   padding: 0;
 }
 body {
-  display: inline-block;
+  display: flex;
   margin: auto;
+}
+
+.main-content {
+  display: block;
 }
 h1 {
   color: #00A2F4;
