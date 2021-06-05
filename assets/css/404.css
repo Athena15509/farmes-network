@@ -3,7 +3,8 @@
   padding: 0;
 }
 body {
-  text-align: center;
+  display: inline-block;
+  margin: auto;
 }
 h1 {
   color: #00A2F4;
