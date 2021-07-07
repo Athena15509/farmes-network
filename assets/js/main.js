@@ -1,77 +1,81 @@
-jQuery(document).ready(function($){
+$(document).ready(function () {
+  // Загрузочный экран ~ минимум 1 секунда анимации
+  setTimeout(function () {
+    // Не позволяем пользователю листать страницу в момент прогрузки сайта
+    const body = $('.body-page');
+    body.css("overflow", "hidden");
 
-  $(".btn-start").click(function (e) {
-    // Remove any old one
-    $(".ripple").remove();
-    // Setup
-    var posX = $(this).offset().left,
-        posY = $(this).offset().top,
-        buttonWidth = $(this).width(),
-        buttonHeight =  $(this).height();
-    // Add the element
-    $(this).prepend('<span class="ripple"></span>');
-   // Make it round!
-    if(buttonWidth >= buttonHeight) {
-      buttonHeight = buttonWidth;
-    } else {
-      buttonWidth = buttonHeight;
+    // Передаём класс
+    const preloader = $('.preloader');
+
+    // Убираем загрузочный экран по прошествии одной секунды
+    if (!preloader.hasClass('done')) {
+      preloader.addClass('done');
+      body.css("overflow", "");
+
+      // Анимации появления элементов шапки
+      $('h1').toggleClass('_active');
+      $('.header span').toggleClass('_active');
     }
-    // Get the center of the element
-    var x = e.pageX - posX - buttonWidth / 2;
-    var y = e.pageY - posY - buttonHeight / 2;
-    // Add the ripples CSS and start the animation
-    $(".ripple").css({
-      width: buttonWidth,
-      height: buttonHeight,
-      top: y + 'px',
-      left: x + 'px'
-    }).addClass("rippleEffect");
+  }, 1000);
+
+  // Bootstrap popover
+  $(function () {
+    $('[data-bs-toggle="popover"]').popover()
   });
+
+
+  // Фиксированные элементы
+
+  // Буфер обмена
+  copyIP.onclick = () => {
+    // Передаём текст в буфер обмена пользователя
+    navigator.clipboard.writeText(copyIP.value);
+    // Добавляем оповещение
+    $('#is-copied-address').toggleClass('done');
+    setTimeout(function () {
+      $('#is-copied-address').toggleClass('done');
+    }, 2000);
+  };
+
+  // Якорь
+  $(window).scroll(function () {
+    const $sections = $('.section, .header');
+    $sections.each(function (i, el) {
+      let top = $(el).offset().top - 100;
+      let bottom = top + $(el).height();
+      let scroll = $(window).scrollTop();
+      let id = $(el).attr('id');
+
+      if (scroll > top && scroll < bottom) {
+        $('.nav-link.active').removeClass('active');
+        $('.nav-link[href="#' + id + '"]').addClass('active');
+      }
+
+    });
+
+    $(".section").on("click", ".header .nav-link", function (event) {
+      // исключаем стандартную реакцию браузера
+      event.preventDefault();
+
+      // получем идентификатор блока из атрибута href
+      let id = $(this).attr('href'),
+
+        // находим высоту, на которой расположен блок
+        top = $(id).offset().top;
+
+      // анимируем переход к блоку, время: 800 мс
+      $('body,html').animate({scrollTop: top}, 800);
+
+      // Добавляем active нажатой ссылке
+      $('.header .nav-link').on("click", function () {
+        $(this).parent('li').siblings().find('.nav-link').removeClass('active');
+        $(this).addClass('active');
+      });
+
+    });
+
+  });
+
+  // Анимации появления
 });
-
-// Change tab
-var currentTabBtn;
-
-$('.tab').each(function() {
-   var that = $(this);
-   if (that.hasClass('active')) {
-       currentTabBtn = that;
-	   return false;
-   }
-});
-
-changeProduct(getTabFromButton(currentTabBtn));
-
-function getTabFromButton(btn) {
-    return $('#' + btn.attr('data-tabname'));
-}
-
-$('.tab').on("click", function(event) {
-
-  getTabFromButton(currentTabBtn).attr("style", "display: none");
-  getTabFromButton(currentTabBtn).removeClass("show");
-  currentTabBtn.removeClass("active");
-
-  var clickedTabBtn = $(event.target);
-  clickedTabBtn.addClass("active");
-
-  var clickedTab = getTabFromButton(clickedTabBtn);
-  clickedTab.toggleClass("show");
-  clickedTab.attr("style", "display: block");
-
-  currentTabBtn = clickedTabBtn;
-
-  changeProduct(clickedTab);
-
-});
-
-$('.productselect').change(function() {
-    changeProduct($(this));
-});
-
-function changeProduct(that) {
-    var optionSelected = that.find("option:selected");
-    var valueSelected  = optionSelected.attr("data-description-name");
-    var description = $('#' + valueSelected + '-description').html();
-    $('#description').html(description);
-}
